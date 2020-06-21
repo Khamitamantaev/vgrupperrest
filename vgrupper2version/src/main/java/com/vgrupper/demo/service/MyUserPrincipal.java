@@ -1,6 +1,5 @@
 package com.vgrupper.demo.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vgrupper.demo.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
