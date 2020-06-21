@@ -83,6 +83,30 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.2.8</version>
 		</dependency>
+<!--		//This first technique is simple and easy.-->
+<!--		We have to include only jackson dependencies into classpath of the application and-->
+<!--		spring will register Jackson2JsonMessageConverter class automatically into context.-->
+<!--		Whenever we ask for a resource from REST API and provide http header “accept: application/json“,-->
+<!--		we will get back the json representation of resource.-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+
+
+
+
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>

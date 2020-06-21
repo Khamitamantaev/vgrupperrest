@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -51,11 +52,6 @@ public class VgrupperappApplication {
 		@Autowired
 		private MyUserDetailsService userDetailsService;
 
-		@RequestMapping({ "/hello" })
-		public String firstPage() {
-			return "Hello World";
-		}
-
 		@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 		public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
@@ -68,21 +64,22 @@ public class VgrupperappApplication {
 				throw new Exception("Incorrect username or password", e);
 			}
 
+			return new  ResponseEntity<String>("Your account has been authenticated!" , HttpStatus.OK);
+		}
 
+		@PostMapping("/register")
+		public ResponseEntity<?> createUser(@Valid @RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+			User usermain = new User();
+			usermain.setPassword(authenticationRequest.getPassword());
+			usermain.setUsername(authenticationRequest.getUsername());
+			userRepository.save(usermain);
 			final UserDetails userDetails = userDetailsService
 					.loadUserByUsername(authenticationRequest.getUsername());
 
 			final String jwt = jwtTokenUtil.generateToken(userDetails);
 
-			return ResponseEntity.ok(new AuthenticationResponse(jwt));
-		}
 
-		@PostMapping("/register")
-		public User createUser(@Valid @RequestBody User user){
-			User usermain = new User();
-			usermain.setPassword(user.getPassword());
-			usermain.setUsername(user.getUsername());
-			return userRepository.save(usermain);
+			return ResponseEntity.ok(new AuthenticationResponse(jwt, usermain));
 		}
 
 	}
