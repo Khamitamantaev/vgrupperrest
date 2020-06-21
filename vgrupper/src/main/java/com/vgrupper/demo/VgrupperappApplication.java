@@ -1,8 +1,10 @@
 package com.vgrupper.demo;
 
+import com.vgrupper.demo.entity.User;
 import com.vgrupper.demo.filters.JwtRequestFilter;
 import com.vgrupper.demo.models.AuthenticationRequest;
 import com.vgrupper.demo.models.AuthenticationResponse;
+import com.vgrupper.demo.repositories.UserRepository;
 import com.vgrupper.demo.service.MyUserDetailsService;
 import com.vgrupper.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @SpringBootApplication
 public class VgrupperappApplication {
@@ -37,6 +38,9 @@ public class VgrupperappApplication {
 
 	@RestController
 	class HelloWorldController {
+
+		@Autowired
+		private UserRepository userRepository;
 
 		@Autowired
 		private AuthenticationManager authenticationManager;
@@ -73,6 +77,14 @@ public class VgrupperappApplication {
 			return ResponseEntity.ok(new AuthenticationResponse(jwt));
 		}
 
+		@PostMapping("/register")
+		public User createUser(@Valid @RequestBody User user){
+			User usermain = new User();
+			usermain.setPassword(user.getPassword());
+			usermain.setUsername(user.getUsername());
+			return userRepository.save(usermain);
+		}
+
 	}
 
 	@EnableWebSecurity
@@ -101,10 +113,14 @@ public class VgrupperappApplication {
 		@Override
 		protected void configure(HttpSecurity httpSecurity) throws Exception {
 			httpSecurity.csrf().disable()
-					.authorizeRequests().antMatchers("/authenticate").permitAll().
-					anyRequest().authenticated().and().
+					.authorizeRequests()
+					.antMatchers("/authenticate").permitAll()
+					.antMatchers("/register").permitAll()
+					.antMatchers("/h2-console/**").permitAll()
+					.anyRequest().authenticated().and().
 					exceptionHandling().and().sessionManagement()
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+			httpSecurity.headers().frameOptions().disable();
 			httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		}

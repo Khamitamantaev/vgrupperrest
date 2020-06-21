@@ -1,7 +1,9 @@
 package com.vgrupper.demo.controllers;
 
+import com.vgrupper.demo.entity.User;
 import com.vgrupper.demo.entity.VgrupperMessage;
 import com.vgrupper.demo.exception.VgrupperNotFoundException;
+import com.vgrupper.demo.repositories.UserRepository;
 import com.vgrupper.demo.repositories.VgrupperRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +17,8 @@ public class VgrupperController {
 
     @Autowired
     private VgrupperRepository vgrupperRepository;
+
+
 
 
     @GetMapping("/vgruppers")
@@ -32,4 +36,6 @@ public class VgrupperController {
         return vgrupperRepository.findById(vgrup_id).
                 orElseThrow(()->new VgrupperNotFoundException(vgrup_id));
     }
+
+
 }
