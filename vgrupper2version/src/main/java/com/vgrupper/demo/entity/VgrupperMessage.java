@@ -1,24 +1,28 @@
 package com.vgrupper.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@JsonIgnoreProperties("id")
-@Table(name = "vgrupper")
+@Table(name = "VGRUPPERMESSAGE")
 public class VgrupperMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @JsonProperty("title")
     private String title;
 
-    @JsonProperty("description")
     private String description;
+
+    @OneToMany(mappedBy = "vgruppermessages") //сюда вписываем поле, которое будет в Comments
+    private List<Comments> comments;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
 
     public VgrupperMessage() {
     }
@@ -53,12 +57,19 @@ public class VgrupperMessage {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "VgrupperMessage{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public List<Comments> getCommentsList() {
+        return comments;
+    }
+
+    public void setCommentsList(List<Comments> commentsList) {
+        this.comments = commentsList;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin( origins = "http://khamitamantaev.com", maxAge = 3600)
+@CrossOrigin( maxAge = 3600)
 @RestController
 public class VgrupperController {
 
