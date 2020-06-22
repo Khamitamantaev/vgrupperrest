@@ -1,6 +1,6 @@
 package com.vgrupper.demo.repositories;
 
-import com.vgrupper.demo.entity.VgrupperMessage;
+import com.vgrupper.demo.entity.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface VgrupperRepository extends JpaRepository<VgrupperMessage, Long> {
+public interface VgrupperRepository extends JpaRepository<Message, Long> {
 
-    List<VgrupperMessage> findAll();
+    List<Message> findAll();
 
-    VgrupperMessage save(VgrupperMessage vgrupperMessage);
+    Message save(Message message);
 
-    Optional<VgrupperMessage> findById(Long id);
+    Optional<Message> findById(Long id);
 
 }

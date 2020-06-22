@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "VGRUPPERMESSAGE")
-public class VgrupperMessage {
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,10 +24,10 @@ public class VgrupperMessage {
     @JoinColumn(name = "id_user")
     private User user;
 
-    public VgrupperMessage() {
+    public Message() {
     }
 
-    public VgrupperMessage(long id, String title, String description) {
+    public Message(long id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;

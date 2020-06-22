@@ -1,7 +1,5 @@
 package com.vgrupper.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 
 @Entity
@@ -25,7 +23,7 @@ public class Comments {
 
     @ManyToOne
     @JoinColumn(name = "id_vgruppermessage")
-    private VgrupperMessage vgruppermessages;
+    private Message vgruppermessages;
 
     public Comments() {
     }
@@ -62,11 +60,11 @@ public class Comments {
         this.user = user;
     }
 
-    public VgrupperMessage getVgruppermessage() {
+    public Message getVgruppermessage() {
         return vgruppermessages;
     }
 
-    public void setVgrupperMessage(VgrupperMessage vgruppermessage) {
+    public void setVgrupperMessage(Message vgruppermessage) {
         this.vgruppermessages = vgruppermessage;
     }
 }
