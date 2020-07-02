@@ -16,4 +16,6 @@ public interface VgrupperRepository extends JpaRepository<Message, Long> {
 
     Optional<Message> findById(Long id);
 
+
+
 }

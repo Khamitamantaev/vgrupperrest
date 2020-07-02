@@ -3,6 +3,7 @@ package com.vgrupper.demo.controllers;
 import com.vgrupper.demo.entity.Message;
 import com.vgrupper.demo.exception.VgrupperNotFoundException;
 import com.vgrupper.demo.repositories.VgrupperRepository;
+import com.vgrupper.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,15 @@ import java.util.List;
 public class VgrupperController {
 
     @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
     private VgrupperRepository vgrupperRepository;
 
     @GetMapping("/vgruppers")
     public List<Message> getAllVgrupper() {
+
+
         return vgrupperRepository.findAll();
     }
 
@@ -37,6 +43,7 @@ public class VgrupperController {
 
         return new ResponseEntity<Message>(message, HttpStatus.OK);
     }
+
 
 
 }

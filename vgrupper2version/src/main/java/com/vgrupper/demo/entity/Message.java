@@ -27,10 +27,19 @@ public class Message {
     public Message() {
     }
 
-    public Message(long id, String title, String description) {
+//    public Message(long id, String title, String description) {
+//        this.id = id;
+//        this.title = title;
+//        this.description = description;
+//    }
+
+
+    public Message(long id, String title, String description, List<Comments> comments, User user) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.comments = comments;
+        this.user = user;
     }
 
     public long getId() {
