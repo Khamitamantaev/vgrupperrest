@@ -1,66 +1,53 @@
 package com.vgrupper.demo.controllers;
 
-import com.vgrupper.demo.entity.Comments;
-import com.vgrupper.demo.entity.Message;
-import com.vgrupper.demo.exception.NotFoundException;
-import com.vgrupper.demo.exception.VgrupperNotFoundException;
-import com.vgrupper.demo.repositories.CommentsRepository;
-import com.vgrupper.demo.repositories.VgrupperRepository;
-import com.vgrupper.demo.service.VgrupperService;
-import com.vgrupper.demo.util.JwtUtil;
+
+import com.vgrupper.demo.entity.Post;
+import com.vgrupper.demo.exception.ResourceNotFoundException;
+import com.vgrupper.demo.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
-@CrossOrigin( maxAge = 3600)
 @RestController
-public class VgrupperController {
+public class PostController {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private PostRepository postRepository;
 
-    @Autowired
-    private VgrupperRepository vgrupperRepository;
-
-    @Autowired
-    private VgrupperService vgrupperService;
-
-    @Autowired
-    private CommentsRepository commentsRepository;
-
-    @GetMapping("/vgruppers")
-    public List<Message> getAllVgrupper() {
-
-
-        return vgrupperRepository.findAll();
+    @GetMapping("/posts")
+    public Page<Post> getAllPosts(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
-    @PostMapping("/vgruppers")
-    public ResponseEntity<?> createVgrupper(@Valid @RequestBody Message newMessage) {
-        Message message = vgrupperService.saveCommentsAndMesssages(newMessage.getCommentsList(),newMessage);
-        return new ResponseEntity<Message>(message, HttpStatus.CREATED);
+    @PostMapping("/posts")
+    public Post createPost(@Valid @RequestBody Post post) {
+        return postRepository.save(post);
     }
 
-    @GetMapping("/vgruppers/{id}")
-    public ResponseEntity<?> getvgrupperMessage(@PathVariable(value = "id")Long vgrup_id) throws VgrupperNotFoundException {
-        Message message = vgrupperRepository.findById(vgrup_id).
-                orElseThrow(()->new VgrupperNotFoundException(vgrup_id));
-
-        return new ResponseEntity<Message>(message, HttpStatus.OK);
+    @PutMapping("/posts/{postId}")
+    public Post updatePost(@PathVariable Long postId, @Valid @RequestBody Post postRequest) {
+        return postRepository.findById(postId).map(post -> {
+            post.setTitle(postRequest.getTitle());
+            post.setDescription(postRequest.getDescription());
+            post.setContent(postRequest.getContent());
+            return postRepository.save(post);
+        }).orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
     }
 
-    @DeleteMapping("vgruppers/{id}")
-    public ResponseEntity<String> deleteMessage(@PathVariable Long id){
-        vgrupperService.deleteMessage(id);
-        return new ResponseEntity<>("Your message is deleted now!", HttpStatus.OK);
+
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<?> deletePost(@PathVariable Long postId) {
+        return postRepository.findById(postId).map(post -> {
+            postRepository.delete(post);
+            return ResponseEntity.ok().build();
+        }).orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
     }
 
+}
 
 
 //    @PutMapping("/vgruppers/{id}")
@@ -69,7 +56,6 @@ public class VgrupperController {
 //        return new ResponseEntity<Message>(message, HttpStatus.OK);
 //    }
 
-}
 
 //post
 //        List<Comments> commentsList = newMessage.getCommentsList();

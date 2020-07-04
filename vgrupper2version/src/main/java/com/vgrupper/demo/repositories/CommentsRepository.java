@@ -1,26 +1,17 @@
 package com.vgrupper.demo.repositories;
 
-import com.vgrupper.demo.entity.Comments;
+import com.vgrupper.demo.entity.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CommentsRepository  extends JpaRepository<Comments, Long> {
+public interface CommentsRepository  extends JpaRepository<Comment, Long> {
 
-    @Override
-    boolean existsById(Long id);
+    Page<Comment> findByPostId(Long postId, Pageable pageable);
+    Optional<Comment> findByIdAndPostId(Long id, Long postId);
 
-    List<Comments> findAll();
-
-    Optional<Comments> findById(Long id);
-
-    @Override
-    @Query("delete from COMMENTS c where  ")
-    void deleteById(@Param("id") Long aLong);
 }

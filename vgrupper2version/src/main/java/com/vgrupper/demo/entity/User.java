@@ -19,11 +19,11 @@ public class User {
 
     private String password;
 
-    @OneToMany(mappedBy = "user") //сюда вписываем поле, которое будет в VgrupperMessage
-    private List<Message> messages;
-
-    @OneToMany(mappedBy = "user") //сюда вписываем поле, которое будет в VgrupperMessage
-    private List<Comments> comments;
+//    @OneToMany(mappedBy = "user") //сюда вписываем поле, которое будет в VgrupperMessage
+//    private List<Post> posts;
+//
+//    @OneToMany(mappedBy = "user") //сюда вписываем поле, которое будет в VgrupperMessage
+//    private List<Comment> comments;
 
     public User() {
     }
@@ -52,19 +52,19 @@ public class User {
         this.password = password;
     }
 
-    public List<Message> getVgrupperMessages() {
-        return messages;
-    }
+//    public List<Post> getVgrupperMessages() {
+//        return posts;
+//    }
+//
+//    public void setVgrupperMessages(List<Post> posts) {
+//        this.posts = posts;
+//    }
 
-    public void setVgrupperMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    public List<Comments> getCommentsList() {
-        return comments;
-    }
-
-    public void setCommentsList(List<Comments> commentsList) {
-        this.comments = commentsList;
-    }
+//    public List<Comment> getCommentsList() {
+//        return comments;
+//    }
+//
+//    public void setCommentsList(List<Comment> commentList) {
+//        this.comments = commentList;
+//    }
 }
