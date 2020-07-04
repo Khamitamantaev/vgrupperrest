@@ -4,36 +4,24 @@ import com.vgrupper.demo.entity.Comments;
 import com.vgrupper.demo.entity.Message;
 import com.vgrupper.demo.repositories.CommentsRepository;
 import com.vgrupper.demo.repositories.VgrupperRepository;
+import com.vgrupper.demo.service.VgrupperService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("vgrupper/{id}")
-public class CommentController {
+import java.util.List;
 
-    @Autowired
-    private VgrupperRepository vgrupperRepository;
+@RestController
+public class CommentController {
 
     @Autowired
     private CommentsRepository commentsRepository;
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Message putMessage(@RequestBody Message newMessage, @PathVariable Long id) {
-
-
-        return vgrupperRepository.findById(id).map(message -> {
-
-            message.setTitle(newMessage.getTitle());
-            message.setDescription(newMessage.getDescription());
-            message.setCommentsList(newMessage.getCommentsList());
-            return vgrupperRepository.save(message);
-
-        }).orElseGet(()-> {
-            newMessage.setId(id);
-            return vgrupperRepository.save(newMessage);
-        });
-
+    @DeleteMapping("vgruppers/messages/{com_id}")
+    public ResponseEntity<String> deleteMessageById(@PathVariable("com_id") Long id){
+        commentsRepository.deleteById(id);
+        return new ResponseEntity<>("Your comments delete now!", HttpStatus.OK);
     }
 }

@@ -8,10 +8,10 @@ public class Comments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
 
-    @Column(nullable = false, length = 32)
+    @Column(length = 32)
     private String message;
 
     @Column(length = 1024)
@@ -22,17 +22,22 @@ public class Comments {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_vgruppermessage")
-    private Message vgruppermessages;
+    @JoinColumn(name = "id_message")
+    private Message messages;
 
     public Comments() {
     }
 
-    public long getId() {
+    public Comments( String message, String code) {
+        this.message = message;
+        Code = code;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,10 +66,10 @@ public class Comments {
     }
 
     public Message getVgruppermessage() {
-        return vgruppermessages;
+        return messages;
     }
 
     public void setVgrupperMessage(Message vgruppermessage) {
-        this.vgruppermessages = vgruppermessage;
+        this.messages = vgruppermessage;
     }
 }
