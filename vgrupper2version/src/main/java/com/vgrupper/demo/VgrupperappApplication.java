@@ -111,6 +111,12 @@ public class VgrupperappApplication {
 		protected void configure(HttpSecurity httpSecurity) throws Exception {
 			httpSecurity.csrf().disable()
 					.authorizeRequests()
+					.antMatchers(
+							"/bootstrap/**",
+							"/fonts/**",
+							"/js/**",
+							"/css/**",
+							"/img/**").permitAll()
 					.antMatchers("/authenticate").permitAll()
 					.antMatchers("/register").permitAll()
 					.antMatchers("/h2-console/**").permitAll()
